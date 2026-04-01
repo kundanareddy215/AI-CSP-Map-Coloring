@@ -30,16 +30,15 @@ def is_valid(district, color, assignment):
 
 # Step 5: Backtracking algorithm
 def backtrack(assignment):
-    # If all districts are assigned
     if len(assignment) == len(districts):
         return assignment
 
-    # Select an unassigned district
+    # Select unassigned district
     for district in districts:
         if district not in assignment:
             break
 
-    # Try all colors
+    # Try colors
     for color in colors:
         if is_valid(district, color, assignment):
             assignment[district] = color
@@ -56,10 +55,10 @@ def backtrack(assignment):
 # Step 6: Solve CSP
 solution = backtrack({})
 
-# Step 7: Print solution
-print("\nTelangana Map Coloring Solution:\n")
-for district in solution:
-    print(f"{district:15} → {solution[district]}")
+# Step 7: Print solution (FIXED FORMAT)
+print("Solution:")
+for district in districts:
+    print(f"{district} = {solution[district]}")
 
 
 # ---------------- VISUALIZATION ----------------
@@ -70,18 +69,19 @@ import matplotlib.pyplot as plt
 # Create graph
 G = nx.Graph()
 
-# Add edges (connections between districts)
+# Add edges
 for d in neighbors:
     for n in neighbors[d]:
         G.add_edge(d, n)
 
-# Assign colors to nodes
+# Assign colors
 color_map = [solution[node].lower() for node in G.nodes()]
 
 # Draw graph
 plt.figure(figsize=(8, 6))
 pos = nx.spring_layout(G)
-nx.draw(G, pos, with_labels=True, node_color=color_map, node_size=2000, font_size=8)
+nx.draw(G, pos, with_labels=True, node_color=color_map,
+        node_size=2000, font_size=8)
 
 plt.title("Telangana Map Coloring (CSP Visualization)")
 plt.show()
